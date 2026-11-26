@@ -30,6 +30,8 @@ function SettingsWindow({
         const res = await window.api.checkForUpdates()
         if (res?.status === 'update-available') {
           setUpdateStatusText(`v${res.version} ready!`)
+          setCheckingUpdate(false)
+          return
         } else {
           setUpdateStatusText('Up to date')
         }
@@ -38,12 +40,11 @@ function SettingsWindow({
       }
     } catch {
       setUpdateStatusText('Up to date')
-    } finally {
-      setTimeout(() => {
-        setCheckingUpdate(false)
-        setTimeout(() => setUpdateStatusText(''), 3500)
-      }, 700)
     }
+    setTimeout(() => {
+      setCheckingUpdate(false)
+      setTimeout(() => setUpdateStatusText(''), 3000)
+    }, 700)
   }, [checkingUpdate])
 
   useEffect(() => {

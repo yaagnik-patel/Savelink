@@ -1299,9 +1299,9 @@ app.whenReady().then(() => {
       const latestTag = (data.tag_name || '').replace(/^v/, '')
       const currentVer = app.getVersion()
 
-      if (latestTag && latestTag > currentVer) {
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('update-downloaded', { version: latestTag })
+      if (latestTag) {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('update-downloaded', { version: latestTag })
         }
         return { status: 'update-available', version: latestTag }
       }
@@ -1315,14 +1315,14 @@ app.whenReady().then(() => {
     if (!app.isPackaged) return
 
     autoUpdater.on('update-available', (info) => {
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('update-available', { version: info?.version })
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('update-available', { version: info?.version })
       }
     })
 
     autoUpdater.on('update-downloaded', (info) => {
-      if (win && !win.isDestroyed()) {
-        win.webContents.send('update-downloaded', { version: info?.version })
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('update-downloaded', { version: info?.version })
       }
     })
 
