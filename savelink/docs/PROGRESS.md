@@ -4,6 +4,10 @@
 SaveLink features a true screen notch dock (Dynamic Island / MacBook notch aesthetic) that emerges directly from the screen bezel without any rectangular borders or square corner artifacts. It launches directly in the closed/collapsed widget state. Fluid spring-physics animations are integrated with a centralized lifecycle state machine (`CLOSED -> OPENING -> OPEN -> CLOSING -> CLOSED`). A clean, comfortable shortcut hint (`Alt + C to save`) is displayed above the SaveLink title. An official Windows Setup Installer (`SaveLink-Setup-1.0.0.exe`) is now ready for deployment across any Windows PC, complete with automatic Windows boot startup, desktop shortcuts, start menu integration, and an in-app Settings toggle.
 
 ## Done
+- [x] Streamlined Settings Modal & Version Footer:
+  - Removed bulky descriptive captions from Appearance, Startup, and Tags sections for a clean, modern aesthetic.
+  - Added Settings footer with live app version display (`SaveLink v1.0.0`) and interactive "Check for updates" button.
+  - Successfully committed and pushed to GitHub remote (`origin/main`).
 - [x] In-App Silent Auto-Updater (GitHub Releases Integration):
   - Integrated `electron-updater` configured with GitHub repository `yaagnik-patel/Savelink`.
   - Silent startup check: checks for updates 5 seconds after app launch and periodically every 4 hours.
