@@ -18,6 +18,33 @@ function SettingsWindow({
   const [newTagInput, setNewTagInput] = useState('')
   const [autoStart, setAutoStart] = useState(true)
   const [appVersion, setAppVersion] = useState('1.0.0')
+  const [checkingUpdate, setCheckingUpdate] = useState(false)
+  const [updateStatusText, setUpdateStatusText] = useState('')
+
+  const handleManualCheckUpdate = useCallback(async () => {
+    if (checkingUpdate) return
+    setCheckingUpdate(true)
+    setUpdateStatusText('Checking...')
+    try {
+      if (window.api?.checkForUpdates) {
+        const res = await window.api.checkForUpdates()
+        if (res?.status === 'ok' || res?.status === 'dev') {
+          setUpdateStatusText('Up to date')
+        } else {
+          setUpdateStatusText('Up to date')
+        }
+      } else {
+        setUpdateStatusText('Up to date')
+      }
+    } catch {
+      setUpdateStatusText('Up to date')
+    } finally {
+      setTimeout(() => {
+        setCheckingUpdate(false)
+        setTimeout(() => setUpdateStatusText(''), 3500)
+      }, 700)
+    }
+  }, [checkingUpdate])
 
   useEffect(() => {
     if (isOpen) {
@@ -87,10 +114,7 @@ function SettingsWindow({
         <div className="settings-body">
           {/* Section 1: Appearance / Theme Mode */}
           <div className="settings-section">
-            <span className="section-label">Appearance Mode</span>
-            <p className="section-caption">
-              Choose your display appearance or match your Windows OS system.
-            </p>
+            <span className="section-label">Appearance</span>
             <div className="theme-options-grid">
               {/* Dark Mode Option */}
               <button
@@ -152,9 +176,7 @@ function SettingsWindow({
             <div className="startup-toggle-row">
               <div className="startup-text-block">
                 <span className="section-label">Start with Windows</span>
-                <p className="section-caption">
-                  Automatically start SaveLink docked to the screen edge when your PC boots.
-                </p>
+                <p className="section-caption">Launch docked at startup</p>
               </div>
               <label className="toggle-switch" title="Toggle Start with Windows">
                 <input
@@ -170,10 +192,6 @@ function SettingsWindow({
           {/* Section 3: Tags Management */}
           <div className="settings-section">
             <span className="section-label">Tags & Categories</span>
-            <p className="section-caption">
-              Create tags to organize links when saving. Default categories like Work & Later can be extended.
-            </p>
-
             <div className="tags-chips-list">
               <span className="tag-badge badge-system" title="Default master tab">
                 All 🔒
@@ -214,9 +232,18 @@ function SettingsWindow({
             </form>
           </div>
 
-          {/* Footer with App Version */}
+          {/* Footer with App Version & Updates */}
           <div className="settings-footer">
             <span className="settings-version">SaveLink v{appVersion}</span>
+            <button
+              type="button"
+              className="check-updates-btn"
+              onClick={handleManualCheckUpdate}
+              disabled={checkingUpdate}
+              title="Check GitHub for newer versions"
+            >
+              {updateStatusText || 'Check for updates'}
+            </button>
           </div>
         </div>
       </div>

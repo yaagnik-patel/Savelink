@@ -372,9 +372,9 @@
 .settings-footer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding-top: 14px;
-  margin-top: 6px;
+  justify-content: space-between;
+  padding-top: 12px;
+  margin-top: 4px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -386,6 +386,28 @@
   font-size: 11.5px;
   font-weight: 600;
   color: var(--muted);
-  letter-spacing: 0.03em;
-  opacity: 0.75;
+  letter-spacing: 0.02em;
+  opacity: 0.8;
+}
+
+.check-updates-btn {
+  background: transparent;
+  color: #7c5cff;
+  border: 1px solid rgba(124, 92, 255, 0.35);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.check-updates-btn:hover:not(:disabled) {
+  background: rgba(124, 92, 255, 0.12);
+  border-color: #7c5cff;
+}
+
+.check-updates-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
