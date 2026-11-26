@@ -1115,6 +1115,10 @@ app.whenReady().then(() => {
   })
 
   // IPC: Auto-Start Handlers
+  ipcMain.handle('get-app-version', () => {
+    return app.getVersion()
+  })
+
   ipcMain.handle('get-auto-start', () => {
     return getSettings().autoStart !== false
   })

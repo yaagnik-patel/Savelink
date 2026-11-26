@@ -36,6 +36,7 @@ contextBridge.exposeInMainWorld('api', {
   },
 
   // Auto-Start APIs
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
   getAutoStart: () => ipcRenderer.invoke('get-auto-start'),
   setAutoStart: (enabled) => ipcRenderer.invoke('set-auto-start', enabled),
 

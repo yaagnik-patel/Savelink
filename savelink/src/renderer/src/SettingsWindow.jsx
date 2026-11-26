@@ -17,10 +17,18 @@ function SettingsWindow({
 }) {
   const [newTagInput, setNewTagInput] = useState('')
   const [autoStart, setAutoStart] = useState(true)
+  const [appVersion, setAppVersion] = useState('1.0.0')
 
   useEffect(() => {
-    if (isOpen && window.api?.getAutoStart) {
-      window.api.getAutoStart().then((enabled) => setAutoStart(enabled))
+    if (isOpen) {
+      if (window.api?.getAutoStart) {
+        window.api.getAutoStart().then((enabled) => setAutoStart(enabled))
+      }
+      if (window.api?.getAppVersion) {
+        window.api.getAppVersion().then((v) => {
+          if (v) setAppVersion(v)
+        })
+      }
     }
   }, [isOpen])
 
@@ -204,6 +212,11 @@ function SettingsWindow({
                 + Add
               </button>
             </form>
+          </div>
+
+          {/* Footer with App Version */}
+          <div className="settings-footer">
+            <span className="settings-version">SaveLink v{appVersion}</span>
           </div>
         </div>
       </div>
