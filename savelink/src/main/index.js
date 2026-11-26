@@ -1292,8 +1292,27 @@ app.whenReady().then(() => {
     autoUpdater.quitAndInstall()
   })
 
+  function isNewerVersion(latest, current) {
+    const a = String(latest || '').replace(/^v/, '').split('.').map((n) => parseInt(n, 10) || 0)
+    const b = String(current || '').replace(/^v/, '').split('.').map((n) => parseInt(n, 10) || 0)
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+      if ((a[i] || 0) > (b[i] || 0)) return true
+      if ((a[i] || 0) < (b[i] || 0)) return false
+    }
+    return false
+  }
+
   ipcMain.handle('check-for-updates', async () => {
     try {
+      if (app.isPackaged) {
+        const result = await autoUpdater.checkForUpdates()
+        const latestVer = result?.updateInfo?.version
+        if (latestVer && isNewerVersion(latestVer, app.getVersion())) {
+          return { status: 'update-available', version: latestVer }
+        }
+        return { status: 'up-to-date' }
+      }
+
       const res = await fetch('https://api.github.com/repos/yaagnik-patel/Savelink/releases/latest', {
         headers: { 'User-Agent': 'SaveLink-App' }
       })
@@ -1302,7 +1321,7 @@ app.whenReady().then(() => {
       const latestTag = (data.tag_name || '').replace(/^v/, '')
       const currentVer = app.getVersion()
 
-      if (latestTag && latestTag > currentVer) {
+      if (latestTag && isNewerVersion(latestTag, currentVer)) {
         if (mainWindow && !mainWindow.isDestroyed()) {
           mainWindow.webContents.send('update-downloaded', { version: latestTag })
         }
@@ -1347,21 +1366,23 @@ app.whenReady().then(() => {
 
   initAutoUpdater()
 
-  // Automatic background update check on launch (checks GitHub in both dev and production)
-  setTimeout(async () => {
-    try {
-      const res = await fetch('https://api.github.com/repos/yaagnik-patel/Savelink/releases/latest', {
-        headers: { 'User-Agent': 'SaveLink-App' }
-      })
-      if (!res.ok) return
-      const data = await res.json()
-      const latestTag = (data.tag_name || '').replace(/^v/, '')
-      const currentVer = app.getVersion()
-      if (latestTag && latestTag > currentVer && mainWindow && !mainWindow.isDestroyed()) {
-        mainWindow.webContents.send('update-downloaded', { version: latestTag })
-      }
-    } catch (_) {}
-  }, 2000)
+  // Dev-only background check simulation
+  if (!app.isPackaged) {
+    setTimeout(async () => {
+      try {
+        const res = await fetch('https://api.github.com/repos/yaagnik-patel/Savelink/releases/latest', {
+          headers: { 'User-Agent': 'SaveLink-App' }
+        })
+        if (!res.ok) return
+        const data = await res.json()
+        const latestTag = (data.tag_name || '').replace(/^v/, '')
+        const currentVer = app.getVersion()
+        if (latestTag && isNewerVersion(latestTag, currentVer) && mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('update-downloaded', { version: latestTag })
+        }
+      } catch (_) {}
+    }, 2000)
+  }
 
   createWindow()
 
