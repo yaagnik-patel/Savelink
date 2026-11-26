@@ -1,0 +1,185 @@
+/* ==========================================================
+   COLLAPSED DOCK WIDGET (FLAT SOLID COLORS - NO GRADIENTS)
+   ========================================================== */
+.collapsed-capsule {
+  width: 56px !important;
+  height: 152px !important;
+  position: absolute !important;
+  top: 0;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 34px 0 34px 0;
+  user-select: none;
+  cursor: grab;
+  -webkit-app-region: drag;
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+
+.collapsed-capsule.dock-right {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.collapsed-capsule.dock-left {
+  left: 0 !important;
+  right: auto !important;
+}
+
+.collapsed-capsule:active {
+  cursor: grabbing;
+}
+
+/* 1. Solid Pure Black Notch SVG Layer (#000000) */
+.tab-shape-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Drag Handle Grip Zone */
+.capsule-drag-handle {
+  width: 100%;
+  height: 0;
+  cursor: grab;
+  -webkit-app-region: drag;
+  position: relative;
+  z-index: 2;
+}
+
+/* Buttons inside the pill do NOT drag */
+.capsule-icon-btn,
+.capsule-add-btn {
+  -webkit-app-region: no-drag;
+}
+
+/* Vertical Icon Stack */
+.capsule-icons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Circular Buttons: 38px wide and 38px tall, centered with 9px margins */
+.capsule-icon-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  background-color: #161719;
+  color: #ffffff;
+  border: 1px solid #26272a;
+  box-shadow: inset 0 0 0 1px #26272a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 150ms ease, transform 100ms ease;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.capsule-icon-btn:hover {
+  background-color: #1e1f22;
+}
+
+.capsule-icon-btn:active {
+  transform: scale(0.96);
+}
+
+.capsule-icon-btn:focus-visible {
+  outline: 2px solid #8ab4ff;
+  outline-offset: 2px;
+}
+
+/* Active button: white (#ffffff) background, black (#000000) icon */
+.capsule-icon-btn.active {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
+  box-shadow: none;
+}
+
+.capsule-icon-btn.active:hover {
+  background-color: #f0f0f0;
+}
+
+/* Light Mode Pill Button Overrides */
+[data-theme='light'] .capsule-icon-btn {
+  background-color: #f1f5f9;
+  color: #0c0f0a;
+  border: 1px solid #e2e8f0;
+  box-shadow: inset 0 0 0 1px #e2e8f0;
+}
+
+[data-theme='light'] .capsule-icon-btn:hover {
+  background-color: #e2e8f0;
+}
+
+[data-theme='light'] .capsule-icon-btn.active {
+  background-color: #0c0f0a;
+  color: #ffffff;
+  border-color: #0c0f0a;
+}
+
+/* 20px SVG icons with 2.2px stroke and round caps/joins */
+.capsule-svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Add button: 38px, #8ab4ff background, black icon, soft glow */
+.capsule-add-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  margin-top: 8px;
+  border-radius: 50%;
+  background-color: #8ab4ff;
+  color: #000000;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 16px rgba(138, 180, 255, 0.4);
+  transition: background-color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.capsule-add-btn:hover {
+  background-color: #9bc0ff;
+  box-shadow: 0 0 20px rgba(138, 180, 255, 0.6);
+}
+
+.capsule-add-btn:active {
+  transform: scale(0.96);
+}
+
+.capsule-add-btn:focus-visible {
+  outline: 2px solid #8ab4ff;
+  outline-offset: 2px;
+}
