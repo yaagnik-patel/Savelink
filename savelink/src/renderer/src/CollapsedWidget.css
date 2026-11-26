@@ -183,3 +183,36 @@
   outline: 2px solid #8ab4ff;
   outline-offset: 2px;
 }
+
+/* Pulsing Update Ready Notification Dot on Collapsed Notch */
+.collapsed-update-badge {
+  position: absolute;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  cursor: pointer;
+  z-index: 10;
+  animation: updatePulse 1.8s infinite ease-in-out;
+}
+
+.collapsed-capsule.dock-right .collapsed-update-badge {
+  left: 12px;
+}
+
+.collapsed-capsule.dock-left .collapsed-update-badge {
+  right: 12px;
+}
+
+@keyframes updatePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
+  }
+}

@@ -1286,6 +1286,9 @@ app.whenReady().then(() => {
 
   // ── Auto Updater Setup ──────────────────────────────────────────────────────
   ipcMain.handle('restart-and-install-update', () => {
+    if (!app.isPackaged) {
+      return { status: 'dev' }
+    }
     autoUpdater.quitAndInstall()
   })
 
@@ -1343,6 +1346,21 @@ app.whenReady().then(() => {
   }
 
   initAutoUpdater()
+
+  // Automatic background update check on launch (checks GitHub in both dev and production)
+  setTimeout(async () => {
+    try {
+      const res = await fetch('https://api.github.com/repos/yaagnik-patel/Savelink/releases/latest', {
+        headers: { 'User-Agent': 'SaveLink-App' }
+      })
+      if (!res.ok) return
+      const data = await res.json()
+      const latestTag = (data.tag_name || '').replace(/^v/, '')
+      if (latestTag && mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('update-downloaded', { version: latestTag })
+      }
+    } catch (_) {}
+  }, 2000)
 
   createWindow()
 

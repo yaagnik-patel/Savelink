@@ -391,9 +391,12 @@ function App() {
     setLinkToDelete(null)
   }, [])
 
-  const handleRestartUpdate = useCallback(() => {
+  const handleRestartUpdate = useCallback(async () => {
     if (window.api?.restartAndInstallUpdate) {
-      window.api.restartAndInstallUpdate()
+      const res = await window.api.restartAndInstallUpdate()
+      if (res?.status === 'dev') {
+        alert('Update test successful! In the installed app, clicking Restart closes the app, installs v1.0.1 silently, and relaunches automatically.')
+      }
     }
   }, [])
 
@@ -486,6 +489,7 @@ function App() {
           destTab={destTab}
           onExpand={handleExpand}
           resolvedTheme={resolvedTheme}
+          updateDownloaded={updateDownloaded}
         />
       ) : (
         <OpenContainer

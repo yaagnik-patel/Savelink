@@ -11,7 +11,8 @@ function CollapsedWidget({
   activeTab,
   destTab,
   onExpand,
-  resolvedTheme = 'dark'
+  resolvedTheme = 'dark',
+  updateDownloaded
 }) {
   const isLight = resolvedTheme === 'light'
 
@@ -42,6 +43,15 @@ function CollapsedWidget({
 
       {/* 2. Top Drag Handle Grip Zone */}
       <div className="capsule-drag-handle" title="Drag to reposition" />
+
+      {/* 2b. Update Ready Notification Dot */}
+      {updateDownloaded && (
+        <div
+          className="collapsed-update-badge"
+          onClick={() => onExpand('All')}
+          title={`Update ${updateDownloaded.version ? `v${updateDownloaded.version} ` : ''}ready! Click to open`}
+        />
+      )}
 
       {/* 3. Action Icon: All Links */}
       <div className="capsule-icons-list">
