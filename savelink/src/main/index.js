@@ -1290,10 +1290,22 @@ app.whenReady().then(() => {
   })
 
   ipcMain.handle('check-for-updates', async () => {
-    if (!app.isPackaged) return { status: 'dev' }
     try {
-      const result = await autoUpdater.checkForUpdates()
-      return { status: 'ok', updateInfo: result?.updateInfo }
+      const res = await fetch('https://api.github.com/repos/yaagnik-patel/Savelink/releases/latest', {
+        headers: { 'User-Agent': 'SaveLink-App' }
+      })
+      if (!res.ok) return { status: 'up-to-date' }
+      const data = await res.json()
+      const latestTag = (data.tag_name || '').replace(/^v/, '')
+      const currentVer = app.getVersion()
+
+      if (latestTag && latestTag > currentVer) {
+        if (win && !win.isDestroyed()) {
+          win.webContents.send('update-downloaded', { version: latestTag })
+        }
+        return { status: 'update-available', version: latestTag }
+      }
+      return { status: 'up-to-date' }
     } catch (err) {
       return { status: 'error', message: err?.message }
     }

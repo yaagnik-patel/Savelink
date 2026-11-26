@@ -28,8 +28,8 @@ function SettingsWindow({
     try {
       if (window.api?.checkForUpdates) {
         const res = await window.api.checkForUpdates()
-        if (res?.status === 'ok' || res?.status === 'dev') {
-          setUpdateStatusText('Up to date')
+        if (res?.status === 'update-available') {
+          setUpdateStatusText(`v${res.version} ready!`)
         } else {
           setUpdateStatusText('Up to date')
         }
