@@ -1302,7 +1302,7 @@ app.whenReady().then(() => {
       const latestTag = (data.tag_name || '').replace(/^v/, '')
       const currentVer = app.getVersion()
 
-      if (latestTag) {
+      if (latestTag && latestTag > currentVer) {
         if (mainWindow && !mainWindow.isDestroyed()) {
           mainWindow.webContents.send('update-downloaded', { version: latestTag })
         }
@@ -1356,7 +1356,8 @@ app.whenReady().then(() => {
       if (!res.ok) return
       const data = await res.json()
       const latestTag = (data.tag_name || '').replace(/^v/, '')
-      if (latestTag && mainWindow && !mainWindow.isDestroyed()) {
+      const currentVer = app.getVersion()
+      if (latestTag && latestTag > currentVer && mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.webContents.send('update-downloaded', { version: latestTag })
       }
     } catch (_) {}

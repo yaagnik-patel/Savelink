@@ -391,12 +391,9 @@ function App() {
     setLinkToDelete(null)
   }, [])
 
-  const handleRestartUpdate = useCallback(async () => {
+  const handleRestartUpdate = useCallback(() => {
     if (window.api?.restartAndInstallUpdate) {
-      const res = await window.api.restartAndInstallUpdate()
-      if (res?.status === 'dev') {
-        alert('Update test successful! In the installed app, clicking Restart closes the app, installs v1.0.1 silently, and relaunches automatically.')
-      }
+      window.api.restartAndInstallUpdate()
     }
   }, [])
 
