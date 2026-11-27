@@ -1001,7 +1001,24 @@ function createTray() {
   })
 }
 
-app.whenReady().then(() => {
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      if (!mainWindow.isVisible()) mainWindow.show()
+      if (isCollapsed) {
+        expandWindow()
+      } else {
+        mainWindow.focus()
+      }
+    }
+  })
+}
+
+if (gotTheLock) app.whenReady().then(() => {
   if (process.platform === 'win32') {
     app.setAppUserModelId('com.savelink.app')
   }
